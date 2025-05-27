@@ -1,0 +1,165 @@
+# Pre-commit configuration for lattice Gaussian MCMC project
+repos:
+  # Python code formatting
+  - repo: https://github.com/psf/black
+    rev: 23.3.0
+    hooks:
+      - id: black
+        language_version: python3
+        args: [--line-length=100]
+
+  # Import sorting
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        args: [--profile=black, --line-length=100]
+
+  # Code linting
+  - repo: https://github.com/PyCQA/flake8
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+        args: [--max-line-length=100, --extend-ignore=E203,W503]
+        additional_dependencies:
+          - flake8-docstrings
+          - flake8-import-order
+          - flake8-bugbear
+
+  # Type checking
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.3.0
+    hooks:
+      - id: mypy
+        additional_dependencies: [types-all]
+        args: [--ignore-missing-imports, --no-strict-optional]
+
+  # Security scanning
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.5
+    hooks:
+      - id: bandit
+        args: [-r, src/, -ll]
+        exclude: tests/
+
+  # General file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-toml
+      - id: check-xml
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: check-docstring-first
+      - id: debug-statements
+      - id: check-added-large-files
+        args: [--maxkb=1000]
+      - id: requirements-txt-fixer
+
+  # Documentation checks
+  - repo: https://github.com/econchick/interrogate
+    rev: 1.5.0
+    hooks:
+      - id: interrogate
+        args: [--verbose, --ignore-init-method, --ignore-magic, --ignore-private, --ignore-semiprivate, --fail-under=80]
+        exclude: tests/
+
+  # Jupyter notebook cleaning
+  - repo: https://github.com/nbQA-dev/nbQA
+    rev: 1.7.0
+    hooks:
+      - id: nbqa-black
+      - id: nbqa-isort
+      - id: nbqa-flake8
+
+  # Local hooks for project-specific checks
+  - repo: local
+    hooks:
+      # Fast test suite on commit
+      - id: pytest-fast
+        name: Run fast tests
+        entry: pytest
+        args: [-m, "not slow", --tb=short, -q]
+        language: system
+        types: [python]
+        pass_filenames: false
+        stages: [commit]
+
+      # Check test coverage
+      - id: coverage-check
+        name: Check test coverage
+        entry: pytest
+        args: [--cov=src, --cov-fail-under=75, --tb=no, -q]
+        language: system
+        types: [python]
+        pass_filenames: false
+        stages: [push]
+
+      # Validate docstring coverage
+      - id: docstring-coverage
+        name: Check docstring coverage
+        entry: interrogate
+        args: [src/, --ignore-init-method, --ignore-magic, --ignore-private, --ignore-semiprivate, --fail-under=80, --quiet]
+        language: system
+        types: [python]
+        pass_filenames: false
+
+      # Check for TODO/FIXME comments
+      - id: check-todos
+        name: Check for TODO/FIXME
+        entry: bash -c 'if grep -r "TODO\|FIXME" src/; then echo "Found TODO/FIXME comments"; exit 1; fi'
+        language: system
+        types: [python]
+        pass_filenames: false
+
+      # Validate requirements.txt format
+      - id: check-requirements
+        name: Validate requirements.txt
+        entry: bash -c 'pip-compile --dry-run requirements.in > /dev/null'
+        language: system
+        files: ^requirements\.(in|txt)$
+        pass_filenames: false
+
+      # Check for print statements in source code
+      - id: no-print-statements
+        name: Check for print statements
+        entry: bash -c 'if grep -r "print(" src/ --include="*.py"; then echo "Found print statements in source code"; exit 1; fi'
+        language: system
+        types: [python]
+        pass_filenames: false
+
+      # Validate pytest markers
+      - id: check-pytest-markers
+        name: Validate pytest markers
+        entry: bash -c 'pytest --markers | grep -q "slow\|statistical\|numerical" || (echo "Missing required pytest markers"; exit 1)'
+        language: system
+        files: ^tests/.*\.py$
+        pass_filenames: false
+
+      # Check for large test files
+      - id: check-test-size
+        name: Check test file size
+        entry: bash -c 'find tests/ -name "*.py" -size +100k -exec echo "Large test file: {}" \; -exec false \;'
+        language: system
+        files: ^tests/.*\.py$
+        pass_filenames: false
+
+# Configuration
+default_language_version:
+  python: python3
+
+ci:
+  autofix_commit_msg: |
+    [pre-commit.ci] auto fixes from pre-commit hooks
+
+    for more information, see https://pre-commit.ci
+  autofix_prs: true
+  autoupdate_branch: ''
+  autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+  autoupdate_schedule: weekly
+  skip: []
+  submodules: false

@@ -1,0 +1,22 @@
+
+\begin{table}[ht]
+\centering
+\caption{Convergence and mixing analysis summary for different lattice types and sampling algorithms.}
+\label{tab:convergence_summary}
+\scriptsize
+\begin{tabular}{l|l|l|r|r|r|r|r|r}
+\toprule
+Lattice Type & Alg. & $\sigma$ Regime & TVD(100) & TVD(1000) & $\tau_{mix}$ & $\tau_{int}$ & ESS/n & Gap \\
+\midrule
+Identity ($\mathbb{Z}^{16}$) & Direct & Hard & 0.15 & 0.03 & $< 200$ & 5.2 & 0.95 & $> 0.9$ \\
+Identity ($\mathbb{Z}^{64}$) & Direct & Near & 0.12 & 0.02 & $< 500$ & 8.7 & 0.92 & $> 0.85$ \\
+Identity ($\mathbb{Z}^{256}$) & Direct & Smooth & 0.20 & 0.05 & $< 1500$ & 15.3 & 0.88 & $> 0.80$ \\
+\midrule
+NTRU ($n=64$) & CVP & Medium & 0.35 & 0.12 & $< 2000$ & 25.0 & 0.75 & $> 0.60$ \\
+NTRU ($n=512$) & CVP & Hard & 0.50 & 0.25 & $< 5000$ & 45.0 & 0.65 & $> 0.40$ \\
+\midrule
+General ($n=64$) & Klein & Near & 0.25 & 0.08 & $< 3000$ & 20.0 & 0.85 & $> 0.70$ \\
+General ($n=64$) & IMHK & Near & 0.30 & 0.10 & $< 4000$ & 25.0 & 0.80 & $> 0.65$ \\
+\bottomrule
+\end{tabular}
+\end{table}

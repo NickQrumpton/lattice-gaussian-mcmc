@@ -1,0 +1,17 @@
+
+\begin{table}[ht]
+\centering
+\caption{Computational complexity scaling analysis for different lattice types and operations.}
+\label{tab:scaling_analysis}
+\begin{tabular}{l|c|c|c|c}
+\toprule
+Operation & Identity $\mathbb{Z}^n$ & q-ary Lattice & NTRU Lattice & General Lattice \\
+\midrule
+Sample Generation & $O(n)$ & $O(n^2)$ & $O(n^2)$ & $O(n^3)$ \\
+Memory Usage & $O(n)$ & $O(n^2)$ & $O(n^2)$ & $O(n^2)$ \\
+Basis Operations & $O(1)$ & $O(n^2)$ & $O(n \log n)$ & $O(n^3)$ \\
+CVP Solving & $O(n)$ & $O(n^2)$ & $O(n^2)$ & $O(n^3)$ \\
+Gram-Schmidt & $O(1)$ & $O(n^3)$ & $O(n^2)$ & $O(n^3)$ \\
+\bottomrule
+\end{tabular}
+\end{table}

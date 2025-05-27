@@ -1,0 +1,308 @@
+name: Comprehensive Test Suite
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run tests daily at 2 AM UTC
+    - cron: '0 2 * * *'
+
+jobs:
+  test:
+    name: Test Suite
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.8', '3.9', '3.10', '3.11']
+        exclude:
+          # Reduce matrix for faster CI
+          - os: windows-latest
+            python-version: '3.8'
+          - os: macos-latest
+            python-version: '3.8'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install system dependencies (Ubuntu)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libgmp-dev libmpfr-dev libmpc-dev
+
+    - name: Install system dependencies (macOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+        brew install gmp mpfr libmpc
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install wheel setuptools
+        pip install -r requirements.txt
+        pip install pytest pytest-cov pytest-xdist pytest-benchmark pytest-mock
+        pip install pytest-html pytest-json-report pytest-timeout
+        pip install codecov coverage[toml]
+
+    - name: Install package
+      run: |
+        pip install -e .
+
+    - name: Lint with flake8 (Ubuntu only)
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.9'
+      run: |
+        pip install flake8
+        # Stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Exit-zero treats all errors as warnings
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    - name: Run fast tests
+      run: |
+        pytest tests/ -m "not slow" --cov=src --cov-report=xml --cov-report=term-missing -n auto --timeout=300
+      env:
+        PYTHONPATH: ${{ github.workspace }}
+
+    - name: Run slow tests (Linux Python 3.9 only)
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.9'
+      run: |
+        pytest tests/ -m "slow" --cov=src --cov-append --cov-report=xml --timeout=600
+      env:
+        PYTHONPATH: ${{ github.workspace }}
+
+    - name: Run integration tests
+      run: |
+        pytest tests/integration/ --cov=src --cov-append --cov-report=xml -n auto --timeout=600
+      env:
+        PYTHONPATH: ${{ github.workspace }}
+
+    - name: Generate coverage report
+      run: |
+        coverage report --show-missing
+        coverage html
+
+    - name: Upload coverage to Codecov
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.9'
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+
+    - name: Archive test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results-${{ matrix.os }}-py${{ matrix.python-version }}
+        path: |
+          htmlcov/
+          .coverage
+          coverage.xml
+          pytest-report.html
+
+    - name: Check coverage threshold
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.9'
+      run: |
+        coverage report --fail-under=80
+
+  performance:
+    name: Performance Tests
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-benchmark
+        pip install -e .
+
+    - name: Run performance benchmarks
+      run: |
+        pytest tests/ -m "performance" --benchmark-only --benchmark-json=benchmark.json
+      env:
+        PYTHONPATH: ${{ github.workspace }}
+
+    - name: Store benchmark results
+      uses: benchmark-action/github-action-benchmark@v1
+      with:
+        tool: 'pytest'
+        output-file-path: benchmark.json
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        auto-push: true
+        comment-on-alert: true
+        alert-threshold: '200%'
+        fail-on-alert: true
+
+  reproducibility:
+    name: Reproducibility Tests
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest
+        pip install -e .
+
+    - name: Run reproducibility tests (Run 1)
+      run: |
+        pytest tests/ -m "reproducibility" --tb=short -v > run1.log 2>&1
+      env:
+        PYTHONPATH: ${{ github.workspace }}
+
+    - name: Run reproducibility tests (Run 2)
+      run: |
+        pytest tests/ -m "reproducibility" --tb=short -v > run2.log 2>&1
+      env:
+        PYTHONPATH: ${{ github.workspace }}
+
+    - name: Compare results
+      run: |
+        if diff run1.log run2.log; then
+          echo "Reproducibility tests passed - identical results"
+        else
+          echo "Reproducibility tests failed - different results"
+          exit 1
+        fi
+
+    - name: Archive reproducibility logs
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: reproducibility-logs
+        path: |
+          run1.log
+          run2.log
+
+  security:
+    name: Security Tests
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install security tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install bandit safety
+
+    - name: Run Bandit security linter
+      run: |
+        bandit -r src/ -f json -o bandit-report.json || true
+        bandit -r src/ --severity-level medium
+
+    - name: Check dependencies for known vulnerabilities
+      run: |
+        safety check --json --output safety-report.json || true
+        safety check
+
+    - name: Archive security reports
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: security-reports
+        path: |
+          bandit-report.json
+          safety-report.json
+
+  docs:
+    name: Documentation Tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install sphinx sphinx-rtd-theme docutils
+        pip install -e .
+
+    - name: Test docstring coverage
+      run: |
+        pip install interrogate
+        interrogate src/ --ignore-init-method --ignore-magic --ignore-private --ignore-semiprivate --fail-under=80
+
+    - name: Test documentation build
+      run: |
+        sphinx-build -b html docs/ docs/_build/html -W
+
+    - name: Test README and other markdown
+      run: |
+        pip install markdown
+        python -c "import markdown; markdown.markdown(open('README.md').read())"
+
+  notify:
+    name: Notification
+    runs-on: ubuntu-latest
+    needs: [test, performance, reproducibility, security, docs]
+    if: always()
+
+    steps:
+    - name: Notify on success
+      if: ${{ needs.test.result == 'success' && needs.performance.result == 'success' && needs.reproducibility.result == 'success' }}
+      run: |
+        echo "All tests passed successfully! ✅"
+
+    - name: Notify on failure
+      if: ${{ needs.test.result == 'failure' || needs.performance.result == 'failure' || needs.reproducibility.result == 'failure' }}
+      run: |
+        echo "Some tests failed! ❌"
+        echo "Test result: ${{ needs.test.result }}"
+        echo "Performance result: ${{ needs.performance.result }}"
+        echo "Reproducibility result: ${{ needs.reproducibility.result }}"
+        exit 1

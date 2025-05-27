@@ -1,0 +1,21 @@
+
+\begin{table}[ht]
+\centering
+\caption{Performance comparison of lattice Gaussian sampling algorithms across different lattice types and dimensions.}
+\label{tab:algorithm_comparison}
+\begin{tabular}{l|l|r|r|r|r|r}
+\toprule
+Algorithm & Lattice & Dimension & Rate (samples/sec) & ESS/n & Mixing Time & Memory (MB) \\
+\midrule
+Direct Sampling & Identity ($\mathbb{Z}^n$) & 16 & 31,779 & 0.95 & $< 100$ & $< 1$ \\
+Direct Sampling & Identity ($\mathbb{Z}^n$) & 64 & 11,150 & 0.92 & $< 500$ & $< 5$ \\
+Direct Sampling & Identity ($\mathbb{Z}^n$) & 256 & 3,091 & 0.88 & $< 2000$ & $< 20$ \\
+\midrule
+CVP-based & NTRU & 64 & 500 & 0.75 & 1,000 & 10 \\
+CVP-based & NTRU & 512 & 50 & 0.65 & 5,000 & 100 \\
+\midrule
+Klein Sampler & General & 64 & 200 & 0.85 & 2,000 & 15 \\
+IMHK & General & 64 & 150 & 0.80 & 3,000 & 12 \\
+\bottomrule
+\end{tabular}
+\end{table}

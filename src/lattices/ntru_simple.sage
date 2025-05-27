@@ -1,0 +1,208 @@
+#!/usr/bin/env sage
+"""
+Simple NTRU Lattice Implementation for Testing.
+"""
+
+from sage.all import *
+from sage.stats.distributions.discrete_gaussian_integer import DiscreteGaussianDistributionIntegerSampler
+
+print("Loading NTRU implementation...")
+
+class NTRULattice:
+    """NTRU lattice for cryptographic applications."""
+    
+    def __init__(self, n, q, sigma=None):
+        """Initialize NTRU lattice."""
+        self.n = n
+        self.q = q
+        self.sigma = sigma if sigma is not None else 1.17 * sqrt(q).n()
+        
+        # Polynomial rings
+        R.<x> = PolynomialRing(ZZ)
+        self.R = R.quotient(x^n + 1)
+        
+        # Ring mod q
+        Rq.<x> = PolynomialRing(GF(q))
+        self.Rq = Rq.quotient(x^n + 1)
+        
+        # Discrete Gaussian sampler
+        self.dgauss = DiscreteGaussianDistributionIntegerSampler(self.sigma)
+        
+        # Keys
+        self.f = None
+        self.g = None
+        self.F = None
+        self.G = None
+        self.h = None
+        self.basis_matrix = None
+    
+    def _sample_gaussian_poly(self):
+        """Sample polynomial with Gaussian coefficients."""
+        coeffs = [self.dgauss() for _ in range(self.n)]
+        return self.R(coeffs)
+    
+    def _multiply_poly(self, f, g):
+        """Multiply polynomials in R."""
+        return f * g
+    
+    def _invert_poly_mod_q(self, f):
+        """Invert polynomial mod q."""
+        f_coeffs = list(f.lift())[:self.n]
+        f_mod_q = self.Rq([GF(self.q)(c) for c in f_coeffs])
+        try:
+            return f_mod_q^(-1)
+        except:
+            return None
+    
+    def _conjugate_poly(self, f):
+        """Compute conjugate f*(x) = f(-x)."""
+        coeffs = list(f.lift())[:self.n]
+        conj_coeffs = [coeffs[0]] + [-coeffs[self.n - i] for i in range(1, self.n)]
+        return self.R(conj_coeffs)
+    
+    def _ntru_solve(self, f, g):
+        """Solve fG - gF = q."""
+        # Compute conjugates
+        f_conj = self._conjugate_poly(f)
+        g_conj = self._conjugate_poly(g)
+        
+        # Compute norms
+        Nf = self._multiply_poly(f, f_conj)
+        Ng = self._multiply_poly(g, g_conj)
+        
+        # Get constant terms
+        nf = ZZ(Nf.lift()[0])
+        ng = ZZ(Ng.lift()[0])
+        
+        # Extended GCD
+        d, u, v = xgcd(nf, ng)
+        
+        # Scale by q
+        u = u * self.q // d if d != 1 else u * self.q
+        v = v * self.q // d if d != 1 else v * self.q
+        
+        # Compute F, G
+        F = self._multiply_poly(f_conj, self.R(v))
+        G = self._multiply_poly(g_conj, self.R(u))
+        
+        return F, G
+    
+    def generate_keys(self, max_attempts=100):
+        """Generate NTRU keys."""
+        for _ in range(max_attempts):
+            # Sample f with extra 1
+            f_coeffs = [self.dgauss() for _ in range(self.n)]
+            f_coeffs[0] += 1
+            self.f = self.R(f_coeffs)
+            
+            # Check invertibility
+            f_inv = self._invert_poly_mod_q(self.f)
+            if f_inv is None:
+                continue
+            
+            # Sample g
+            self.g = self._sample_gaussian_poly()
+            
+            # Compute h = g/f mod q
+            g_mod_q = self.Rq([GF(self.q)(c) for c in list(self.g.lift())[:self.n]])
+            h_mod_q = g_mod_q * f_inv
+            self.h = self.R([ZZ(c) for c in list(h_mod_q.lift())])
+            
+            # Solve NTRU equation
+            try:
+                self.F, self.G = self._ntru_solve(self.f, self.g)
+                
+                # Verify
+                check = self._multiply_poly(self.f, self.G) - self._multiply_poly(self.g, self.F)
+                check_coeffs = list(check.lift())
+                
+                if check_coeffs[0] % self.q == 0 and all(c == 0 for c in check_coeffs[1:self.n]):
+                    self._generate_basis()
+                    return (self.f, self.g, self.F, self.G, self.h)
+            except:
+                continue
+        
+        return None
+    
+    def _poly_to_matrix(self, f):
+        """Convert polynomial to negacyclic circulant matrix."""
+        coeffs = list(f.lift())[:self.n]
+        M = matrix(ZZ, self.n, self.n)
+        
+        for i in range(self.n):
+            for j in range(self.n):
+                if i <= j:
+                    M[i, j] = coeffs[j - i]
+                else:
+                    M[i, j] = -coeffs[self.n + j - i]
+        
+        return M
+    
+    def _generate_basis(self):
+        """Generate lattice basis."""
+        g_mat = self._poly_to_matrix(self.g)
+        f_mat = self._poly_to_matrix(self.f)
+        G_mat = self._poly_to_matrix(self.G)
+        F_mat = self._poly_to_matrix(self.F)
+        
+        # B = [[g, -f], [G, -F]]^T
+        self.basis_matrix = block_matrix([
+            [g_mat, -f_mat],
+            [G_mat, -F_mat]
+        ])
+    
+    def get_basis(self):
+        """Get basis matrix."""
+        return self.basis_matrix
+    
+    def gram_schmidt_norms(self):
+        """Compute GS norms."""
+        if self.basis_matrix is None:
+            return None
+        
+        B = self.basis_matrix.change_ring(RDF)
+        norms = []
+        
+        # Simple GS
+        for i in range(B.nrows()):
+            v = B[i]
+            for j in range(i):
+                if j < len(norms) and norms[j] > 0:
+                    proj = (v * B[j]) / (norms[j]^2) * B[j]
+                    v = v - proj
+            norms.append(v.norm())
+        
+        return norms
+
+# Test
+if __name__ == "__main__":
+    print("\nTesting NTRU implementation...")
+    
+    # Small example
+    n, q = 8, 257
+    print(f"\nCreating NTRU(n={n}, q={q})")
+    
+    ntru = NTRULattice(n, q)
+    print("✓ Created")
+    
+    print("\nGenerating keys...")
+    keys = ntru.generate_keys(max_attempts=10)
+    
+    if keys:
+        print("✓ Keys generated")
+        f, g, F, G, h = keys
+        
+        # Verify
+        check = ntru._multiply_poly(f, G) - ntru._multiply_poly(g, F)
+        check_coeffs = list(check.lift())
+        
+        print(f"\nVerifying fG - gF = q:")
+        print(f"  check[0] mod q = {check_coeffs[0] % q}")
+        print(f"  Other coeffs zero: {all(c == 0 for c in check_coeffs[1:n])}")
+        
+        # Basis
+        B = ntru.get_basis()
+        print(f"\nBasis: {B.nrows()}×{B.ncols()}")
+        print(f"Det = {abs(B.det())} (expected {q^n})")
+    else:
+        print("✗ Key generation failed")

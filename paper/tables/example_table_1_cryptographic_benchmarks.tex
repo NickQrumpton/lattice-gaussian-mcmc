@@ -1,0 +1,15 @@
+\begin{table}[htbp]
+\centering
+\caption{Performance comparison on cryptographic lattices. Times are per sample with 95\% confidence intervals. Speedup indicates IMHK advantage for batch sampling.}
+\label{tab:cryptographic_benchmarks}
+\begin{tabular}{lrrrrrr}
+\toprule
+Lattice & Dimension & $\sigma$ & Klein Time (ms) & IMHK Time (ms) & Speedup & IMHK Accept & Spectral Gap \\
+\midrule
+NTRU-256 & 512 & 4.0 & 2.6 ± 0.1 & 0.5 ± 0.1 & 5.20× & 0.634 & 0.280 \\
+NTRU-512 & 1024 & 8.0 & 10.5 ± 0.2 & 1.0 ± 0.1 & 10.50× & 0.756 & 0.360 \\
+Falcon-512 & 512 & 10.0 & 2.6 ± 0.1 & 0.5 ± 0.1 & 5.20× & 0.823 & 0.400 \\
+Falcon-1024 & 1024 & 14.0 & 10.5 ± 0.2 & 1.0 ± 0.1 & 10.50× & 0.890 & 0.480 \\
+\bottomrule
+\end{tabular}
+\end{table}
