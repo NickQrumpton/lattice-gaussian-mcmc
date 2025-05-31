@@ -9,7 +9,7 @@ This version includes:
 """
 
 import numpy as np
-from typing import Optional, Tuple, Dict
+from typing import Optional, Tuple, Dict, Any
 import logging
 from functools import lru_cache
 from scipy.special import logsumexp
@@ -55,8 +55,10 @@ class RefinedKleinSampler(DiscreteGaussianSampler):
     
     def _precompute_qr_stable(self):
         """Compute QR decomposition with numerical stability checks."""
-        # Use pivoting for better stability
-        self.Q, self.R, self.P = np.linalg.qr(self.lattice.basis, mode='full', pivoting=True)
+        # Standard QR decomposition
+        self.Q, self.R = np.linalg.qr(self.lattice.basis, mode='full')
+        # Identity permutation since we're not using pivoting
+        self.P = np.arange(self.dimension)
         
         # Check conditioning
         condition_number = np.linalg.cond(self.R)
@@ -318,6 +320,21 @@ class RefinedKleinSampler(DiscreteGaussianSampler):
                 self._sample_cache.clear()
         
         return np.array(samples)
+    
+    def sample(self, num_samples: int = 1) -> np.ndarray:
+        """
+        Generate multiple samples from the discrete Gaussian distribution.
+        
+        Args:
+            num_samples: Number of samples to generate
+            
+        Returns:
+            Array of shape (num_samples, dimension) containing lattice points
+        """
+        if num_samples == 1:
+            return self.sample_single().reshape(1, -1)
+        else:
+            return self.parallel_sample_batch(num_samples)
     
     def diagnostic_info(self) -> Dict[str, Any]:
         """

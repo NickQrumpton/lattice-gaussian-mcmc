@@ -1,0 +1,53 @@
+{
+  "basis_info": {
+    "name": "nearly_singular",
+    "matrix": "[[100   1]\n [100   2]]",
+    "description": "Nearly singular basis (small determinant)",
+    "category": "ill_conditioned"
+  },
+  "properties": {
+    "determinant": 100.00000000000004,
+    "condition_number": 200.045001124775,
+    "frobenius_norm": 141.4390328021229,
+    "spectral_norm": 141.43726564267814,
+    "orthogonality_defect": 0.02121320277268385,
+    "vector_norms": [
+      100.00499987500625,
+      100.0199980003999
+    ],
+    "norm_ratio": 1.0001499737554362,
+    "volume": 100.00000000000004,
+    "hermite_factor": 10.000499987500623
+  },
+  "performance": {
+    "sampling_time": 2.234361171722412,
+    "time_per_sample_ms": 0.044687223434448246,
+    "reconstruction_error": 1188.0
+  },
+  "correctness": {
+    "tv_distance": 0.5130171844942567,
+    "kl_divergence": 3.383273905148483,
+    "partition_function": 2.2419971082312404,
+    "tv_passed": "False",
+    "kl_passed": "False",
+    "correctness_passed": "False"
+  },
+  "mixing": {
+    "tau_int": [
+      1.0,
+      1.0
+    ],
+    "ess": [
+      50000.0,
+      50000.0
+    ],
+    "ess_ratio": [
+      1.0,
+      1.0
+    ],
+    "min_ess_ratio": 1.0,
+    "mixing_passed": "True"
+  },
+  "overall_passed": "False",
+  "plot_path": "results/comprehensive_benchmark/nearly_singular_benchmark.png"
+}

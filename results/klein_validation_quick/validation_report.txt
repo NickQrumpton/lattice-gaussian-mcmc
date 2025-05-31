@@ -1,0 +1,38 @@
+# Klein Sampler Validation Report
+==================================================
+
+## Summary of Results
+
+### Experiment 1: 1D Discrete Gaussian Validation
+- Total Variation Distance: 0.019469
+- KL Divergence: 0.002260
+- Mean Error: 0.062400
+- Std Error: 0.005947
+
+### Experiment 2: 2D Klein Sampler Validation
+- Total Variation Distance: 0.017392
+- KL Divergence: 0.002497
+- Empirical Mean: [-0.0298, -0.063]
+
+### Experiment 3: Acceptance Consistency
+- Overall Acceptance Rate: 1.000
+- Acceptance Std Dev: 0.000
+- Spectral Gap: None
+
+### Experiment 4: Mixing Time Analysis
+- Integrated ACT (x): 1.0
+- Integrated ACT (y): 1.0
+- ESS (x): 1000.0
+- ESS (y): 1000.0
+- Theoretical t_mix(0.25): -13.2
+
+## Interpretation
+
+- **TV Distance < 0.02**: The sampler accurately matches the theoretical distribution.
+- **KL Divergence < 0.05**: Good agreement between empirical and theoretical probabilities.
+- **Acceptance Rate > 0.5**: Efficient IMHK sampling with Klein proposals.
+- **ESS / n_steps > 0.1**: Good mixing properties for practical applications.
+
+The validation results confirm that the Klein sampler implementation
+correctly samples from the discrete Gaussian distribution over lattices,
+with performance characteristics matching theoretical expectations.

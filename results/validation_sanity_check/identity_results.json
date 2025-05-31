@@ -1,0 +1,76 @@
+{
+  "basis_name": "identity",
+  "basis_matrix": [
+    [
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0
+    ]
+  ],
+  "basis_properties": {
+    "description": "2D Identity Matrix (orthogonal, det=1)",
+    "properties": "Orthogonal basis, unit determinant, Z\u00b2 lattice",
+    "determinant": 1.0,
+    "condition_number": 1.0,
+    "orthogonality_measure": 0.0,
+    "basis_norms": [
+      1.0,
+      1.0
+    ]
+  },
+  "n_samples": 50000,
+  "sigma": 2.0,
+  "center": [
+    0.0,
+    0.0
+  ],
+  "sampling_time": 2.200441837310791,
+  "reconstruction_error": 0.0,
+  "partition_function": 25.13271681328306,
+  "tv_distance": 0.019118843756800608,
+  "kl_divergence": 0.0027354138480369964,
+  "statistics": {
+    "empirical_mean": [
+      -0.00188,
+      -0.00576
+    ],
+    "empirical_std": [
+      1.9962956859145278,
+      1.9920960876429292
+    ],
+    "empirical_covariance": [
+      [
+        3.9852761711234166,
+        -0.02817139222784446
+      ],
+      [
+        -0.02817139222784446,
+        3.9685261929238713
+      ]
+    ],
+    "theoretical_mean": [
+      2.036587866933673e-17,
+      -7.433603947344868e-06
+    ],
+    "theoretical_std": [
+      1.999996625721896,
+      1.9999787849464263
+    ],
+    "theoretical_covariance": [
+      [
+        3.99998650289897,
+        1.5685282262830013e-18
+      ],
+      [
+        1.5685282262830013e-18,
+        3.9999151402357835
+      ]
+    ]
+  },
+  "success_criteria": {
+    "tv_threshold": 0.02,
+    "kl_threshold": 0.05,
+    "tv_passed": 

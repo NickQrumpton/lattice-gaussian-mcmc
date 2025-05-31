@@ -1,0 +1,56 @@
+{
+  "experiment_1d": {
+    "n_samples": 10000,
+    "sigma": 5.0,
+    "center": 0.0,
+    "tv_distance": 0.019468710505866276,
+    "kl_divergence": 0.0022599251159109296,
+    "sampling_time": 0.6989459991455078,
+    "mean_error": 0.0624,
+    "std_error": 0.005947087215365521
+  },
+  "experiment_2d": {
+    "n_samples": 5000,
+    "sigma": 2.0,
+    "tv_distance": 0.017392474658088082,
+    "kl_divergence": 0.0024969372138240278,
+    "sampling_time": 0.20212292671203613,
+    "empirical_mean": [
+      -0.0298,
+      -0.063
+    ],
+    "empirical_cov": [
+      [
+        3.905693098619724,
+        0.01812622524504891
+      ],
+      [
+        0.01812622524504891,
+        3.8782066413282648
+      ]
+    ]
+  },
+  "experiment_acceptance": {
+    "n_steps": 2000,
+    "sigma": 2.0,
+    "overall_acceptance": 1.0,
+    "block_acceptances": [
+      1.0,
+      1.0
+    ],
+    "acceptance_std": 0.0,
+    "sampling_time": 0.2537200450897217,
+    "spectral_gap": null
+  },
+  "experiment_mixing": {
+    "n_steps": 1000,
+    "sigma": 2.0,
+    "tau_int_x": 1.0,
+    "tau_int_y": 1.0,
+    "ess_x": 1000.0,
+    "ess_y": 1000.0,
+    "spectral_gap": 0.1,
+    "theoretical_tmix": -13.15762695792117,
+    "sampling_time": 0.12960124015808105
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "basis_info": {
+    "name": "highly_skewed",
+    "matrix": "[[ 1 50]\n [ 0  1]]",
+    "description": "Highly skewed basis (large off-diagonal)",
+    "category": "ill_conditioned"
+  },
+  "properties": {
+    "determinant": 1.0,
+    "condition_number": 2501.9996003196807,
+    "frobenius_norm": 50.0199960015992,
+    "spectral_norm": 50.01999200639361,
+    "orthogonality_defect": 0.02827295980260854,
+    "vector_norms": [
+      50.00999900019995,
+      1.0
+    ],
+    "norm_ratio": 50.00999900019995,
+    "volume": 1.0,
+    "hermite_factor": 1.0
+  },
+  "performance": {
+    "sampling_time": 2.230924606323242,
+    "time_per_sample_ms": 0.04461849212646484,
+    "reconstruction_error": 22754.45011420843
+  },
+  "correctness": {
+    "tv_distance": 0.016719622140628113,
+    "kl_divergence": 0.0022695754100239317,
+    "partition_function": 25.132435309608088,
+    "tv_passed": "True",
+    "kl_passed": "True",
+    "correctness_passed": "True"
+  },
+  "mixing": {
+    "tau_int": [
+      1.001102287074,
+      1.0078693700873744
+    ],
+    "ess": [
+      49944.94633124744,
+      49609.60366884191
+    ],
+    "ess_ratio": [
+      0.9988989266249488,
+      0.9921920733768382
+    ],
+    "min_ess_ratio": 0.9921920733768382,
+    "mixing_passed": "True"
+  },
+  "overall_passed": "True",
+  "plot_path": "results/comprehensive_benchmark/highly_skewed_benchmark.png"
+}

@@ -1,0 +1,64 @@
+{
+  "basis_info": {
+    "name": "ntru_style",
+    "matrix": "[[32  0]\n [ 1  2]]",
+    "description": "NTRU-style lattice basis (q=32)",
+    "category": "cryptographic",
+    "parameters": {
+      "q": 32,
+      "f": [
+        1,
+        3
+      ],
+      "g": [
+        2,
+        1
+      ]
+    }
+  },
+  "properties": {
+    "determinant": 63.99999999999998,
+    "condition_number": 16.015686214260704,
+    "frobenius_norm": 32.07802986469088,
+    "spectral_norm": 32.015682371498585,
+    "orthogonality_defect": 0.0027594200857472507,
+    "vector_norms": [
+      32.0,
+      2.23606797749979
+    ],
+    "norm_ratio": 14.310835055998654,
+    "volume": 63.99999999999998,
+    "hermite_factor": 0.2795084971874738
+  },
+  "performance": {
+    "sampling_time": 2.211232900619507,
+    "time_per_sample_ms": 0.04422465801239014,
+    "reconstruction_error": 4.0
+  },
+  "correctness": {
+    "tv_distance": 0.0029976372047493273,
+    "kl_divergence": 0.00011131054928864993,
+    "partition_function": 2.5066282575371264,
+    "tv_passed": "True",
+    "kl_passed": "True",
+    "correctness_passed": "True"
+  },
+  "mixing": {
+    "tau_int": [
+      1.0,
+      1.0235648468029108
+    ],
+    "ess": [
+      50000.0,
+      48848.88354282021
+    ],
+    "ess_ratio": [
+      1.0,
+      0.9769776708564042
+    ],
+    "min_ess_ratio": 0.9769776708564042,
+    "mixing_passed": "True"
+  },
+  "overall_passed": "True",
+  "plot_path": "results/comprehensive_benchmark/ntru_style_benchmark.png"
+}

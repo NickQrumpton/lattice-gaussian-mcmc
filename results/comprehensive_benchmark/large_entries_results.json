@@ -1,0 +1,53 @@
+{
+  "basis_info": {
+    "name": "large_entries",
+    "matrix": "[[127  83]\n [ 91  67]]",
+    "description": "Basis with large integer entries",
+    "category": "ill_conditioned"
+  },
+  "properties": {
+    "determinant": 956.0000000000005,
+    "condition_number": 37.408414489925235,
+    "frobenius_norm": 189.17716564109952,
+    "spectral_norm": 189.1096090958058,
+    "orthogonality_defect": 0.8736856208500129,
+    "vector_norms": [
+      151.71684151734772,
+      113.00442469213318
+    ],
+    "norm_ratio": 1.342574345479673,
+    "volume": 956.0000000000005,
+    "hermite_factor": 3.6548242893159792
+  },
+  "performance": {
+    "sampling_time": 2.2088429927825928,
+    "time_per_sample_ms": 0.044176859855651854,
+    "reconstruction_error": 11.313708498984761
+  },
+  "correctness": {
+    "tv_distance": 0.018260000000000026,
+    "kl_divergence": 5.629796203287361,
+    "partition_function": 1.0,
+    "tv_passed": "True",
+    "kl_passed": "False",
+    "correctness_passed": "False"
+  },
+  "mixing": {
+    "tau_int": [
+      1.0,
+      1.0
+    ],
+    "ess": [
+      50000.0,
+      50000.0
+    ],
+    "ess_ratio": [
+      1.0,
+      1.0
+    ],
+    "min_ess_ratio": 1.0,
+    "mixing_passed": "True"
+  },
+  "overall_passed": "False",
+  "plot_path": "results/comprehensive_benchmark/large_entries_benchmark.png"
+}

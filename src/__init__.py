@@ -11,7 +11,6 @@ from . import core
 from . import models
 from . import samplers
 from . import diagnostics
-from . import utils
 from . import visualization
 
-__all__ = ["core", "models", "samplers", "diagnostics", "utils", "visualization"]
+__all__ = ["core", "models", "samplers", "diagnostics", "visualization"]

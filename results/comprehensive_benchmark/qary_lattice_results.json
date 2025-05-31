@@ -1,0 +1,66 @@
+{
+  "basis_info": {
+    "name": "qary_lattice",
+    "matrix": "[[17  0]\n [ 0 17]]",
+    "description": "q-ary lattice basis (q=17)",
+    "category": "cryptographic",
+    "parameters": {
+      "q": 17,
+      "A": [
+        [
+          7,
+          3
+        ],
+        [
+          2,
+          5
+        ]
+      ]
+    }
+  },
+  "properties": {
+    "determinant": 289.00000000000006,
+    "condition_number": 1.0,
+    "frobenius_norm": 24.041630560342615,
+    "spectral_norm": 17.0,
+    "orthogonality_defect": 0.0,
+    "vector_norms": [
+      17.0,
+      17.0
+    ],
+    "norm_ratio": 1.0,
+    "volume": 289.00000000000006,
+    "hermite_factor": 1.0
+  },
+  "performance": {
+    "sampling_time": 2.198967695236206,
+    "time_per_sample_ms": 0.04397935390472412,
+    "reconstruction_error": 0.0
+  },
+  "correctness": {
+    "tv_distance": 8.534835524829031e-16,
+    "kl_divergence": 8.881784197001248e-16,
+    "partition_function": 1.0000000000000009,
+    "tv_passed": "True",
+    "kl_passed": "True",
+    "correctness_passed": "True"
+  },
+  "mixing": {
+    "tau_int": [
+      1.0,
+      1.0
+    ],
+    "ess": [
+      50000.0,
+      50000.0
+    ],
+    "ess_ratio": [
+      1.0,
+      1.0
+    ],
+    "min_ess_ratio": 1.0,
+    "mixing_passed": "True"
+  },
+  "overall_passed": "True",
+  "plot_path": "results/comprehensive_benchmark/qary_lattice_benchmark.png"
+}

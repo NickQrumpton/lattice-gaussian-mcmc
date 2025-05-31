@@ -1,0 +1,76 @@
+{
+  "basis_name": "symmetric",
+  "basis_matrix": [
+    [
+      4.0,
+      1.0
+    ],
+    [
+      1.0,
+      3.0
+    ]
+  ],
+  "basis_properties": {
+    "description": "Small Symmetric Matrix with off-diagonal entries",
+    "properties": "Non-orthogonal, det=11, symmetric",
+    "determinant": 11.000000000000002,
+    "condition_number": 1.938748901931751,
+    "orthogonality_measure": 0.5019243175674523,
+    "basis_norms": [
+      4.123105625617661,
+      3.1622776601683795
+    ]
+  },
+  "n_samples": 50000,
+  "sigma": 2.0,
+  "center": [
+    0.0,
+    0.0
+  ],
+  "sampling_time": 2.0936548709869385,
+  "reconstruction_error": 0.0,
+  "partition_function": 2.2925080353005134,
+  "tv_distance": 0.011439942959186145,
+  "kl_divergence": 0.0004760132345506081,
+  "statistics": {
+    "empirical_mean": [
+      -0.00304,
+      0.00628
+    ],
+    "empirical_std": [
+      1.9627508141382461,
+      2.0107611895993283
+    ],
+    "empirical_covariance": [
+      [
+        3.852467807756157,
+        0.03141971959439172
+      ],
+      [
+        0.03141971959439172,
+        4.043241426428529
+      ]
+    ],
+    "theoretical_mean": [
+      3.134987534362499e-17,
+      -8.248829813826438e-19
+    ],
+    "theoretical_std": [
+      1.9631494417591087,
+      1.990686337598312
+    ],
+    "theoretical_covariance": [
+      [
+        3.8539557306791,
+        0.03346813336662002
+      ],
+      [
+        0.03346813336662002,
+        3.9628320947005804
+      ]
+    ]
+  },
+  "success_criteria": {
+    "tv_threshold": 0.02,
+    "kl_threshold": 0.05,
+    "tv_passed": 

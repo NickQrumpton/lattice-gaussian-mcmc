@@ -1,0 +1,54 @@
+{
+  "basis_info": {
+    "name": "random_lll_6",
+    "matrix": "[[-10   8]\n [  9  11]]",
+    "description": "Random LLL-reduced basis #6",
+    "category": "random_lll",
+    "raw_matrix": "[[19  3]\n [ 9 11]]"
+  },
+  "properties": {
+    "determinant": -181.99999999999997,
+    "condition_number": 1.1104668855744109,
+    "frobenius_norm": 19.131126469708992,
+    "spectral_norm": 14.216362867292844,
+    "orthogonality_defect": 0.10381893661580159,
+    "vector_norms": [
+      12.806248474865697,
+      14.212670403551895
+    ],
+    "norm_ratio": 1.1098231017027762,
+    "volume": 181.99999999999997,
+    "hermite_factor": 0.9492622930986468
+  },
+  "performance": {
+    "sampling_time": 2.1500589847564697,
+    "time_per_sample_ms": 0.04300117969512939,
+    "reconstruction_error": 0.0
+  },
+  "correctness": {
+    "tv_distance": 4.797404737504792e-10,
+    "kl_divergence": 4.797404694571452e-10,
+    "partition_function": 1.0000000004797405,
+    "tv_passed": "True",
+    "kl_passed": "True",
+    "correctness_passed": "True"
+  },
+  "mixing": {
+    "tau_int": [
+      1.0,
+      1.0
+    ],
+    "ess": [
+      50000.0,
+      50000.0
+    ],
+    "ess_ratio": [
+      1.0,
+      1.0
+    ],
+    "min_ess_ratio": 1.0,
+    "mixing_passed": "True"
+  },
+  "overall_passed": "True",
+  "plot_path": "results/comprehensive_benchmark/random_lll_6_benchmark.png"
+}

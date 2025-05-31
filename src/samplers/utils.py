@@ -141,9 +141,9 @@ class DiscreteGaussianUtils:
     def jacobi_theta_3(self, z: complex, tau: complex, 
                       derivatives: int = 0) -> Union[complex, List[complex]]:
         """
-        Compute Jacobi theta function ¸ƒ(z|Ä) and its derivatives.
+        Compute Jacobi theta function ?(z|?) and its derivatives.
         
-        ¸ƒ(z|Ä) = £_{n=-}^{} exp(ÀiÄn² + 2Àinz)
+        ?(z|?) = ?_{n=-}^{} exp(?i?n? + 2?inz)
         
         Args:
             z: Argument
@@ -151,7 +151,7 @@ class DiscreteGaussianUtils:
             derivatives: Number of derivatives to compute (0, 1, or 2)
             
         Returns:
-            Value of theta function or list [¸ƒ, ¸ƒ', ¸ƒ''] if derivatives > 0
+            Value of theta function or list [?, ?', ?''] if derivatives > 0
         """
         if tau.imag <= 0:
             raise ValueError("Im(tau) must be positive")
@@ -209,11 +209,11 @@ class DiscreteGaussianUtils:
         """
         Compute Riemann theta function for general lattices.
         
-        ¸(z|©) = £_{nZ^g} exp(Ài n^T © n + 2Ài n^T z)
+        ?(z|?) = ?_{nZ^g} exp(?i n^T ? n + 2?i n^T z)
         
         Args:
             z: Argument vector (g-dimensional)
-            omega: Period matrix (g×g, symmetric with positive imaginary part)
+            omega: Period matrix (g?g, symmetric with positive imaginary part)
             
         Returns:
             Value of Riemann theta function
@@ -246,7 +246,7 @@ class DiscreteGaussianUtils:
     def partition_function(self, lattice_basis: np.ndarray, sigma: float,
                           method: str = 'theta') -> float:
         """
-        Estimate partition function Z_Ã(›) = £_{v›} exp(-À||v||²/Ã²).
+        Estimate partition function Z_?(?) = ?_{v?} exp(-?||v||?/?).
         
         Args:
             lattice_basis: Basis matrix of the lattice
@@ -373,14 +373,14 @@ class DiscreteGaussianUtils:
     
     def smoothing_parameter(self, basis: np.ndarray, epsilon: float = 0.01) -> float:
         """
-        Compute smoothing parameter ·_µ(›) for lattice.
+        Compute smoothing parameter ?_?(?) for lattice.
         
         Args:
             basis: Lattice basis
             epsilon: Smoothing parameter (typically 2^-40 to 2^-80)
             
         Returns:
-            Smoothing parameter ·_µ(›)
+            Smoothing parameter ?_?(?)
         """
         # Compute using dual lattice minimum
         gram = basis @ basis.T
@@ -442,7 +442,7 @@ class DiscreteGaussianUtils:
     
     def rho_inverse(self, lattice_basis: np.ndarray, sigma: float, t: float) -> float:
         """
-        Compute Á_Ã^(-1)(›, t) = min{r : Á_Ã(› ) B(0,r)) e t}.
+        Compute ?_?^(-1)(?, t) = min{r : ?_?(? ) B(0,r)) e t}.
         
         Args:
             lattice_basis: Basis of the lattice
@@ -496,24 +496,24 @@ class DiscreteGaussianUtils:
                                      coset_shift: np.ndarray,
                                      sigma: float) -> np.ndarray:
         """
-        Sample from discrete Gaussian on coset › + c.
+        Sample from discrete Gaussian on coset ? + c.
         
         Args:
-            lattice_basis: Basis of the lattice ›
+            lattice_basis: Basis of the lattice ?
             coset_shift: Coset shift vector c
             sigma: Gaussian parameter
             
         Returns:
-            Sample from D_{›+c,Ã}
+            Sample from D_{?+c,?}
         """
-        # Sample from D_{›,Ã,c} using rejection
+        # Sample from D_{?,?,c} using rejection
         max_attempts = 1000
         
         for _ in range(max_attempts):
             # Sample from continuous Gaussian centered at c
             x = np.random.normal(coset_shift, sigma)
             
-            # Decode to nearest lattice point in ›
+            # Decode to nearest lattice point in ?
             coeffs = np.linalg.solve(lattice_basis.T, x - coset_shift)
             coeffs_int = np.round(coeffs).astype(int)
             lattice_point = lattice_basis.T @ coeffs_int
@@ -536,14 +536,14 @@ class DiscreteGaussianUtils:
         
         Args:
             lattice_basis: Basis of the lattice
-            covariance: Covariance matrix £
+            covariance: Covariance matrix ?
             
         Returns:
             Sample from ellipsoidal discrete Gaussian
         """
         n = lattice_basis.shape[0]
         
-        # Decompose £ = AA^T
+        # Decompose ? = AA^T
         A = np.linalg.cholesky(covariance)
         
         # Transform to spherical case
@@ -648,7 +648,7 @@ class DiscreteGaussianUtils:
         eta = self.smoothing_parameter(basis, epsilon / 4)
         
         if sigma < eta:
-            warnings.warn(f"Ã = {sigma} < ·_{epsilon/4}(›) = {eta}, "
+            warnings.warn(f"? = {sigma} < ?_{epsilon/4}(?) = {eta}, "
                          f"mixing time bound may be loose")
         
         # Compute spectral gap bound
@@ -687,9 +687,9 @@ def test_discrete_gaussian_utils():
     z = 0.1 + 0.2j
     tau = 0.5j
     theta_vals = utils.jacobi_theta_3(z, tau, derivatives=2)
-    print(f"  ¸ƒ({z}|{tau}) = {theta_vals[0]:.6f}")
-    print(f"  ¸ƒ'({z}|{tau}) = {theta_vals[1]:.6f}")
-    print(f"  ¸ƒ''({z}|{tau}) = {theta_vals[2]:.6f}")
+    print(f"  ?({z}|{tau}) = {theta_vals[0]:.6f}")
+    print(f"  ?'({z}|{tau}) = {theta_vals[1]:.6f}")
+    print(f"  ?''({z}|{tau}) = {theta_vals[2]:.6f}")
     
     # Test partition function
     print("\n3. Testing partition function estimation:")
@@ -717,13 +717,13 @@ def test_discrete_gaussian_utils():
     # Test smoothing parameter
     print("\n5. Testing smoothing parameter:")
     eta = utils.smoothing_parameter(basis, epsilon=0.01)
-    print(f"  ·_0.01(›) = {eta:.6f}")
+    print(f"  ?_0.01(?) = {eta:.6f}")
     
     # Test coset sampling
     print("\n6. Testing coset Gaussian sampling:")
     coset_shift = np.array([0.5, 0.5, 0.5])
     sample = utils.sample_discrete_gaussian_coset(basis, coset_shift, sigma)
-    print(f"  Sample from › + c: {sample}")
+    print(f"  Sample from ? + c: {sample}")
     
     print("\nAll tests completed!")
 

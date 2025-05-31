@@ -1,0 +1,19 @@
+{
+  "benchmark_summary": {
+    "total_bases": 15,
+    "passed_bases": "12",
+    "pass_rate": 80.0,
+    "test_parameters": {
+      "n_samples": 50000,
+      "sigma": 2.0,
+      "center": [
+        0.0,
+        0.0
+      ],
+      "tv_threshold": 0.02,
+      "kl_threshold": 0.05,
+      "min_ess_ratio": 0.1
+    }
+  },
+  "category_statistics": {
+    

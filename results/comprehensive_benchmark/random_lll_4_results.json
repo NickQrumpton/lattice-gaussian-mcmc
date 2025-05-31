@@ -1,0 +1,54 @@
+{
+  "basis_info": {
+    "name": "random_lll_4",
+    "matrix": "[[  4  -1]\n [ -3 -11]]",
+    "description": "Random LLL-reduced basis #4",
+    "category": "random_lll",
+    "raw_matrix": "[[-11  -9]\n [ -7 -10]]"
+  },
+  "properties": {
+    "determinant": -46.99999999999999,
+    "condition_number": 2.7661457205229896,
+    "frobenius_norm": 12.12435565298214,
+    "spectral_norm": 11.402142292770272,
+    "orthogonality_defect": 0.32932226804737236,
+    "vector_norms": [
+      4.123105625617661,
+      11.40175425099138
+    ],
+    "norm_ratio": 2.7653315937748606,
+    "volume": 46.99999999999999,
+    "hermite_factor": 0.6014167670256413
+  },
+  "performance": {
+    "sampling_time": 2.2209978103637695,
+    "time_per_sample_ms": 0.04441995620727539,
+    "reconstruction_error": 2.8284271247461903
+  },
+  "correctness": {
+    "tv_distance": 0.0007065299579376373,
+    "kl_divergence": 3.6029258969776e-05,
+    "partition_function": 1.0879147961330147,
+    "tv_passed": "True",
+    "kl_passed": "True",
+    "correctness_passed": "True"
+  },
+  "mixing": {
+    "tau_int": [
+      1.0234462615309343,
+      1.025284434588414
+    ],
+    "ess": [
+      48854.54359392246,
+      48766.95511336013
+    ],
+    "ess_ratio": [
+      0.9770908718784492,
+      0.9753391022672026
+    ],
+    "min_ess_ratio": 0.9753391022672026,
+    "mixing_passed": "True"
+  },
+  "overall_passed": "True",
+  "plot_path": "results/comprehensive_benchmark/random_lll_4_benchmark.png"
+}

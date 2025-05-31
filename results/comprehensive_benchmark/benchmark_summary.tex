@@ -1,0 +1,25 @@
+\begin{table}
+\caption{Klein Sampler Benchmark Results}
+\label{tab:klein_benchmark}
+\begin{tabular}{lllllll}
+\toprule
+name & category & tv_distance & kl_divergence & time_per_sample_ms & min_ess_ratio & status \\
+\midrule
+random_lll_1 & random_lll & 0.000000 & 0.000000 & 0.0451 & 1.000 & ✅ PASS \\
+random_lll_2 & random_lll & 0.000528 & 0.000212 & 0.0445 & 1.000 & ✅ PASS \\
+random_lll_3 & random_lll & 0.000076 & 0.000045 & 0.0444 & 1.000 & ✅ PASS \\
+random_lll_4 & random_lll & 0.000707 & 0.000036 & 0.0444 & 0.975 & ✅ PASS \\
+random_lll_5 & random_lll & 0.017193 & 0.018727 & 0.0444 & 1.000 & ✅ PASS \\
+random_lll_6 & random_lll & 0.000000 & 0.000000 & 0.0430 & 1.000 & ✅ PASS \\
+random_lll_7 & random_lll & 0.000000 & 0.000000 & 0.0434 & 1.000 & ✅ PASS \\
+random_lll_8 & random_lll & 0.000000 & 0.000000 & 0.0430 & 1.000 & ✅ PASS \\
+nearly_singular & ill_conditioned & 0.513017 & 3.383274 & 0.0447 & 1.000 & ❌ FAIL \\
+highly_skewed & ill_conditioned & 0.016720 & 0.002270 & 0.0446 & 0.992 & ✅ PASS \\
+large_entries & ill_conditioned & 0.018260 & 5.629796 & 0.0442 & 1.000 & ❌ FAIL \\
+nearly_parallel & ill_conditioned & 0.874055 & 176.763210 & 0.0442 & 0.991 & ❌ FAIL \\
+qary_lattice & cryptographic & 0.000000 & 0.000000 & 0.0440 & 1.000 & ✅ PASS \\
+ntru_style & cryptographic & 0.002998 & 0.000111 & 0.0442 & 0.977 & ✅ PASS \\
+gadget_lattice & cryptographic & 0.011744 & 0.001375 & 0.0428 & 0.977 & ✅ PASS \\
+\bottomrule
+\end{tabular}
+\end{table}

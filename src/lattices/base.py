@@ -330,7 +330,7 @@ class Lattice(ABC):
         # Hermite's constant γ_n ≈ n/(2πe) for large n
         gamma_n = n / (2 * pi * e)
         
-        return sqrt(gamma_n) * det^(1/n)
+        return sqrt(gamma_n) * det**(1/n)
     
     def __str__(self):
         """String representation of lattice."""

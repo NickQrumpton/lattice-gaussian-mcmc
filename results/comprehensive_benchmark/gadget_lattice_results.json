@@ -1,0 +1,56 @@
+{
+  "basis_info": {
+    "name": "gadget_lattice",
+    "matrix": "[[2 0]\n [1 1]]",
+    "description": "Gadget lattice basis (powers of 2)",
+    "category": "cryptographic",
+    "parameters": {
+      "base": 2
+    }
+  },
+  "properties": {
+    "determinant": 2.0,
+    "condition_number": 2.618033988749895,
+    "frobenius_norm": 2.449489742783178,
+    "spectral_norm": 2.2882456112707374,
+    "orthogonality_defect": 0.2773500981126146,
+    "vector_norms": [
+      2.0,
+      1.4142135623730951
+    ],
+    "norm_ratio": 1.414213562373095,
+    "volume": 2.0,
+    "hermite_factor": 1.0
+  },
+  "performance": {
+    "sampling_time": 2.1415302753448486,
+    "time_per_sample_ms": 0.04283060550689697,
+    "reconstruction_error": 9.219544457292887
+  },
+  "correctness": {
+    "tv_distance": 0.011744430575278412,
+    "kl_divergence": 0.0013749375906515985,
+    "partition_function": 12.566342882532846,
+    "tv_passed": "True",
+    "kl_passed": "True",
+    "correctness_passed": "True"
+  },
+  "mixing": {
+    "tau_int": [
+      1.0230752451335732,
+      1.0
+    ],
+    "ess": [
+      48872.26060627826,
+      50000.0
+    ],
+    "ess_ratio": [
+      0.9774452121255651,
+      1.0
+    ],
+    "min_ess_ratio": 0.9774452121255651,
+    "mixing_passed": "True"
+  },
+  "overall_passed": "True",
+  "plot_path": "results/comprehensive_benchmark/gadget_lattice_benchmark.png"
+}

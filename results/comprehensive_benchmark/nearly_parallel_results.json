@@ -1,0 +1,53 @@
+{
+  "basis_info": {
+    "name": "nearly_parallel",
+    "matrix": "[[100  10]\n [101  11]]",
+    "description": "Nearly parallel basis vectors",
+    "category": "ill_conditioned"
+  },
+  "properties": {
+    "determinant": 90.0,
+    "condition_number": 226.90670401346992,
+    "frobenius_norm": 142.90556322271013,
+    "spectral_norm": 142.90417545058753,
+    "orthogonality_defect": 0.14777615922439746,
+    "vector_norms": [
+      100.4987562112089,
+      101.59724405711013
+    ],
+    "norm_ratio": 1.010930362596654,
+    "volume": 90.0,
+    "hermite_factor": 10.593499054713801
+  },
+  "performance": {
+    "sampling_time": 2.2102441787719727,
+    "time_per_sample_ms": 0.04420488357543945,
+    "reconstruction_error": 1277.245865133256
+  },
+  "correctness": {
+    "tv_distance": 0.8740553559096162,
+    "kl_divergence": 176.76320986825334,
+    "partition_function": 1.0000846512556119,
+    "tv_passed": "False",
+    "kl_passed": "False",
+    "correctness_passed": "False"
+  },
+  "mixing": {
+    "tau_int": [
+      1.00665814210081,
+      1.0088206670884121
+    ],
+    "ess": [
+      49669.294777325544,
+      49562.82283976845
+    ],
+    "ess_ratio": [
+      0.9933858955465109,
+      0.991256456795369
+    ],
+    "min_ess_ratio": 0.991256456795369,
+    "mixing_passed": "True"
+  },
+  "overall_passed": "False",
+  "plot_path": "results/comprehensive_benchmark/nearly_parallel_benchmark.png"
+}

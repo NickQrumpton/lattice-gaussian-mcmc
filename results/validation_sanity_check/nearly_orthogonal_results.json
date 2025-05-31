@@ -1,0 +1,76 @@
+{
+  "basis_name": "nearly_orthogonal",
+  "basis_matrix": [
+    [
+      1.0,
+      0.1
+    ],
+    [
+      0.0,
+      1.0
+    ]
+  ],
+  "basis_properties": {
+    "description": "Nearly Orthogonal Basis (small perturbation)",
+    "properties": "Nearly orthogonal, det=1, small shear",
+    "determinant": 1.0,
+    "condition_number": 1.1051249219725041,
+    "orthogonality_measure": 0.09950125614909971,
+    "basis_norms": [
+      1.004987562112089,
+      1.0
+    ]
+  },
+  "n_samples": 50000,
+  "sigma": 2.0,
+  "center": [
+    0.0,
+    0.0
+  ],
+  "sampling_time": 2.070258140563965,
+  "reconstruction_error": 1.004987562112089,
+  "partition_function": 25.132696886250024,
+  "tv_distance": 0.014763778190396074,
+  "kl_divergence": 0.0024846146498397727,
+  "statistics": {
+    "empirical_mean": [
+      -0.015479999999999935,
+      0.001
+    ],
+    "empirical_std": [
+      2.0042523717337737,
+      2.001878867464069
+    ],
+    "empirical_covariance": [
+      [
+        4.017107911758242,
+        -0.012572771455429068
+      ],
+      [
+        -0.012572771455429068,
+        4.00759915198304
+      ]
+    ],
+    "theoretical_mean": [
+      8.966160113165234e-06,
+      6.5370002472616315e-06
+    ],
+    "theoretical_std": [
+      1.9999782674430777,
+      1.999978567624828
+    ],
+    "theoretical_covariance": [
+      [
+        3.9999130702446153,
+        8.692851128466738e-06
+      ],
+      [
+        8.692851128466738e-06,
+        3.999914270958659
+      ]
+    ]
+  },
+  "success_criteria": {
+    "tv_threshold": 0.02,
+    "kl_threshold": 0.05,
+    "tv_passed": 

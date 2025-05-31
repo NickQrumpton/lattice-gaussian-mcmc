@@ -11,7 +11,7 @@ from typing import Optional, Tuple, List
 import time
 import logging
 from .base import DiscreteGaussianSampler
-from .klein import KleinSampler
+from .klein import RefinedKleinSampler as KleinSampler
 
 logger = logging.getLogger(__name__)
 
@@ -110,7 +110,7 @@ class IMHKSampler(DiscreteGaussianSampler):
         log_target = self.log_gaussian_weight(lattice_point)
         
         # Log probability under proposal (Klein)
-        log_proposal = self.proposal_sampler.log_probability(lattice_point)
+        log_proposal = self.proposal_sampler.compute_log_density(lattice_point)
         
         # Log importance weight
         log_weight = log_target - log_proposal

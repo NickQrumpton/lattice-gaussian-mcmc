@@ -79,7 +79,7 @@ class DiscreteGaussianSampler(ABC):
         if self.sigma < smoothing_param:
             logger.warning(
                 f"σ={self.sigma:.4f} is below smoothing parameter "
-                f"η={smoothing_param:.4f}. Sampling may be biased."
+                f"η={float(smoothing_param):.4f}. Sampling may be biased."
             )
     
     @abstractmethod
